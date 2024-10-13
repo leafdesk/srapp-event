@@ -32,7 +32,7 @@ export default function RootLayout({
         />
         <meta
           property="og:image"
-          content="https://temp.vercel.app/images/devotion_thumbnail.jpg"
+          content="https://sungrak.vercel.app/images/devotion_thumbnail.jpg"
         />
       </head>
 
