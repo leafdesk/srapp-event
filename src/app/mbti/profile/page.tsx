@@ -35,7 +35,7 @@ const ProfilePage = () => {
   const handleSubmit = () => {
     console.log('Profile Data:', JSON.stringify(profile))
     // TODO: 추후 profile data 활용.
-    router.push('/mbti?page=test')
+    router.push('/mbti/test')
   }
 
   return (

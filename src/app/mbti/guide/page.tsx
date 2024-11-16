@@ -42,7 +42,7 @@ const GuidePage = () => {
 
       {/* 하단 버튼 */}
       <div className="pb-5 fixed bottom-0 w-full">
-        <Button onClick={() => router.push('/mbti?page=profile')} text="다음" />
+        <Button onClick={() => router.push('/mbti/profile')} text="다음" />
       </div>
     </main>
   )
