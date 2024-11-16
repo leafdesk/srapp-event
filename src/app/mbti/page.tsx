@@ -4,6 +4,7 @@ import { redirect, useSearchParams } from 'next/navigation'
 import WelcomePage from './welcome-page'
 import GuidePage from './guide-page'
 import ProfilePage from './profile-page'
+import { Suspense } from 'react'
 
 /**
  * 사랑 긍휼 유형 테스트. (편의상 MBTI 페이지로 부름)
@@ -20,11 +21,11 @@ const MBTIPage = () => {
   }
 
   return (
-    <>
-      {page == 'welcome' && <WelcomePage />}
-      {page == 'guide' && <GuidePage />}
-      {page == 'profile' && <ProfilePage />}
-    </>
+    <Suspense fallback={<div>Loading...</div>}>
+      {page === 'welcome' && <WelcomePage />}
+      {page === 'guide' && <GuidePage />}
+      {page === 'profile' && <ProfilePage />}
+    </Suspense>
   )
 }
 
