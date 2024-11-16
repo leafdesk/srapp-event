@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import Button from '@/components/button'
 
 const WelcomePage = () => {
   const router = useRouter()
@@ -31,14 +32,15 @@ const WelcomePage = () => {
       </div> */}
 
       {/* 시작하기 버튼 */}
-      <div className="px-4 mt-10">
+      {/* <div className="px-4 mt-10">
         <button
           onClick={() => router.push(`/mbti?page=guide`)}
           className="w-full h-[60px] rounded-lg flex items-center justify-center bg-[#FF3296] font-medium text-xl text-white"
         >
           시작하기
         </button>
-      </div>
+      </div> */}
+      <Button onClick={() => router.push(`/mbti?page=guide`)} text="시작하기" />
     </main>
   )
 }
