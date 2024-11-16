@@ -3,6 +3,7 @@
 import { redirect, useSearchParams } from 'next/navigation'
 import WelcomePage from './welcome-page'
 import GuidePage from './guide-page'
+import ProfilePage from './profile-page'
 
 /**
  * 사랑 긍휼 유형 테스트. (편의상 MBTI 페이지로 부름)
@@ -12,7 +13,7 @@ const MBTIPage = () => {
   const page = searchParams.get('page')
 
   // 허용된 페이지 params 리스트.
-  const validPages = ['welcome', 'guide', 'first', 'second', 'third']
+  const validPages = ['welcome', 'guide', 'profile', 'test']
   // params가 없거나, 허용된 페이지가 아니면 welcome 페이지로 redirect.
   if (!page || !validPages.includes(page)) {
     redirect('/mbti?page=welcome')
@@ -22,9 +23,7 @@ const MBTIPage = () => {
     <>
       {page == 'welcome' && <WelcomePage />}
       {page == 'guide' && <GuidePage />}
-
-      {page == '3' && <WelcomePage />}
-      {page == '4' && <WelcomePage />}
+      {page == 'profile' && <ProfilePage />}
     </>
   )
 }

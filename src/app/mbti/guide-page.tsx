@@ -1,9 +1,14 @@
+'use client'
+
 import Button from '@/components/button'
 import ProgressBar from '@/components/progress-bar'
+import { useRouter } from 'next/navigation'
 
 const RATE = 10
 
 const GuidePage = () => {
+  const router = useRouter()
+
   return (
     <main className="h-screen bg-[url('/images/mbti_bg_2.svg')] bg-cover bg-center">
       {/* 페이지 헤더 */}
@@ -12,7 +17,9 @@ const GuidePage = () => {
       </h3>
 
       {/* 진행률 상태 바 */}
-      <ProgressBar rate={RATE} />
+      <div className="px-4">
+        <ProgressBar rate={RATE} />
+      </div>
       <span className="font-normal text-lg text-center text-white w-full block">
         {RATE}%
       </span>
@@ -35,7 +42,7 @@ const GuidePage = () => {
 
       {/* 하단 버튼 */}
       <div className="pb-5 fixed bottom-0 w-full">
-        <Button onClick={() => {}} text="다음" />
+        <Button onClick={() => router.push('/mbti?page=profile')} text="다음" />
       </div>
     </main>
   )
