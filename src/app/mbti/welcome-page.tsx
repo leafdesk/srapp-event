@@ -31,6 +31,9 @@ const WelcomePage = () => {
         <img src="/images/mbti_title_2.svg" alt="TEST" />
       </div> */}
 
+      {/* blank */}
+      <div className="h-10" />
+
       {/* 시작하기 버튼 */}
       {/* <div className="px-4 mt-10">
         <button

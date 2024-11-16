@@ -15,7 +15,7 @@ const Button = ({
   text = '',
 }: ButtonProps) => {
   return (
-    <div className="px-4 mt-10">
+    <div className="px-4">
       <button
         onClick={onClick}
         className={`w-full h-[60px] rounded-lg flex items-center justify-center bg-[${bgColor}] font-medium text-xl text-${textColor}`}
