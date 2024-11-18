@@ -7,11 +7,12 @@ import { mbtiQuestions } from './questions'
 import { useRouter } from 'next/navigation'
 import ProgressBar from '@/components/progress-bar'
 import { useCallback, useState } from 'react'
+import { calculateTypeScores, determineResult } from './calculate'
 
 const MBTITestPage = () => {
   const router = useRouter()
 
-  const [answers, setAnswers] = useState<{ [key: number]: number | null }>({})
+  const [answers, setAnswers] = useState<{ [key: number]: number }>({})
   const [isModalOpen, setIsModalOpen] = useState(false)
   const totalQuestions = mbtiQuestions.length
   const rate =
@@ -28,6 +29,14 @@ const MBTITestPage = () => {
       setIsModalOpen(true)
     } else {
       console.log(JSON.stringify(answers))
+
+      const scores = calculateTypeScores(answers)
+      const finalResult = determineResult(scores)
+
+      console.log('Scores:', scores)
+      console.log('Final Result:', finalResult)
+
+      return
       router.push('/mbti/result')
     }
   }, [answers, rate, router])

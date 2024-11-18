@@ -35,19 +35,19 @@ const MBTIQuestion = ({ question, onAnswerChange, id }: MBTIQuestionProps) => {
           <input
             type="radio"
             name={`response-${id}`}
-            value="1"
-            checked={selectedOption === 1}
+            value="5"
+            checked={selectedOption === 5}
             onChange={handleChange}
             className="hidden"
           />
           <div
             className={`w-[49px] h-[49px] rounded-full flex items-center justify-center ${
-              selectedOption === 1 ? 'bg-[#FF3296]' : 'border-2 border-gray-300'
+              selectedOption === 5 ? 'bg-[#FF3296]' : 'border-2 border-gray-300'
             }`}
           >
             <span
               className={`${
-                selectedOption === 1 ? 'text-white' : 'text-transparent'
+                selectedOption === 5 ? 'text-white' : 'text-transparent'
               } text-xs`}
             >
               <div className="w-[16px] h-[9px] bg-[url('/icons/mbti_check_1.svg')] bg-contain bg-no-repeat bg-center" />
@@ -63,19 +63,19 @@ const MBTIQuestion = ({ question, onAnswerChange, id }: MBTIQuestionProps) => {
           <input
             type="radio"
             name={`response-${id}`}
-            value="2"
-            checked={selectedOption === 2}
+            value="4"
+            checked={selectedOption === 4}
             onChange={handleChange}
             className="hidden"
           />
           <div
             className={`w-[35px] h-[35px] rounded-full flex items-center justify-center ${
-              selectedOption === 2 ? 'bg-[#FF3296]' : 'border-2 border-gray-300'
+              selectedOption === 4 ? 'bg-[#FF3296]' : 'border-2 border-gray-300'
             }`}
           >
             <span
               className={`${
-                selectedOption === 2 ? 'text-white' : 'text-transparent'
+                selectedOption === 4 ? 'text-white' : 'text-transparent'
               } text-xs`}
             >
               <div className="w-[12px] h-[7px] bg-[url('/icons/mbti_check_2.svg')] bg-contain bg-no-repeat bg-center" />
@@ -117,19 +117,19 @@ const MBTIQuestion = ({ question, onAnswerChange, id }: MBTIQuestionProps) => {
           <input
             type="radio"
             name={`response-${id}`}
-            value="4"
-            checked={selectedOption === 4}
+            value="2"
+            checked={selectedOption === 2}
             onChange={handleChange}
             className="hidden"
           />
           <div
             className={`w-[35px] h-[35px] rounded-full flex items-center justify-center ${
-              selectedOption === 4 ? 'bg-[#8732FF]' : 'border-2 border-gray-300'
+              selectedOption === 2 ? 'bg-[#8732FF]' : 'border-2 border-gray-300'
             }`}
           >
             <span
               className={`${
-                selectedOption === 4 ? 'text-white' : 'text-transparent'
+                selectedOption === 2 ? 'text-white' : 'text-transparent'
               } text-xs`}
             >
               <div className="w-[12px] h-[7px] bg-[url('/icons/mbti_check_2.svg')] bg-contain bg-no-repeat bg-center" />
@@ -143,19 +143,19 @@ const MBTIQuestion = ({ question, onAnswerChange, id }: MBTIQuestionProps) => {
           <input
             type="radio"
             name={`response-${id}`}
-            value="5"
-            checked={selectedOption === 5}
+            value="1"
+            checked={selectedOption === 1}
             onChange={handleChange}
             className="hidden"
           />
           <div
             className={`w-[49px] h-[49px] rounded-full flex items-center justify-center ${
-              selectedOption === 5 ? 'bg-[#8732FF]' : 'border-2 border-gray-300'
+              selectedOption === 1 ? 'bg-[#8732FF]' : 'border-2 border-gray-300'
             }`}
           >
             <span
               className={`${
-                selectedOption === 5 ? 'text-white' : 'text-transparent'
+                selectedOption === 1 ? 'text-white' : 'text-transparent'
               } text-xs`}
             >
               <div className="w-[16px] h-[9px] bg-[url('/icons/mbti_check_1.svg')] bg-contain bg-no-repeat bg-center" />
