@@ -2,21 +2,31 @@ import { useEffect, useState } from 'react'
 
 type MBTIQuestionProps = {
   question: string | React.ReactNode
+  onAnswerChange: (id: number, value: number) => void
+  id: number
 }
 
-const MBTIQuestion = ({ question }: MBTIQuestionProps) => {
-  const [selectedOption, setSelectedOption] = useState(0)
+/**
+ * MBTI 질문 & 체크 박스 그룹.
+ */
+const MBTIQuestion = ({ question, onAnswerChange, id }: MBTIQuestionProps) => {
+  const [selectedOption, setSelectedOption] = useState<number | null>(null)
 
-  useEffect(() => console.log(selectedOption), [selectedOption])
+  useEffect(() => {
+    if (selectedOption !== null) {
+      onAnswerChange(id, selectedOption)
+    }
+  }, [selectedOption, onAnswerChange])
 
   // 라디오 버튼 선택 시 값 설정
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedOption(parseInt(event.target.value))
+    const value = parseInt(event.target.value)
+    setSelectedOption(value)
   }
 
   return (
-    <section className="h-[175px] px-4">
-      <div className="flex items-center justify-center mb-5">
+    <section className="px-4 py-5">
+      <div className="flex items-center justify-center mb-5 text-center">
         <span className="font-medium text-lg text-[#111]">{question}</span>
       </div>
       <div className="flex items-center justify-between">
@@ -24,7 +34,7 @@ const MBTIQuestion = ({ question }: MBTIQuestionProps) => {
         <label className="flex flex-col items-center cursor-pointer">
           <input
             type="radio"
-            name="response"
+            name={`response-${id}`}
             value="1"
             checked={selectedOption === 1}
             onChange={handleChange}
@@ -32,7 +42,7 @@ const MBTIQuestion = ({ question }: MBTIQuestionProps) => {
           />
           <div
             className={`w-[49px] h-[49px] rounded-full flex items-center justify-center ${
-              selectedOption === 1 ? 'bg-pink-500' : 'border-2 border-gray-300'
+              selectedOption === 1 ? 'bg-[#FF3296]' : 'border-2 border-gray-300'
             }`}
           >
             <span
@@ -40,7 +50,7 @@ const MBTIQuestion = ({ question }: MBTIQuestionProps) => {
                 selectedOption === 1 ? 'text-white' : 'text-transparent'
               } text-xs`}
             >
-              ✔️
+              <div className="w-[16px] h-[9px] bg-[url('/icons/mbti_check_1.svg')] bg-contain bg-no-repeat bg-center" />
             </span>
           </div>
           <span className="mt-2 text-gray-700 text-sm h-10 text-center">
@@ -52,7 +62,7 @@ const MBTIQuestion = ({ question }: MBTIQuestionProps) => {
         <label className="flex flex-col items-center cursor-pointer">
           <input
             type="radio"
-            name="response"
+            name={`response-${id}`}
             value="2"
             checked={selectedOption === 2}
             onChange={handleChange}
@@ -60,7 +70,7 @@ const MBTIQuestion = ({ question }: MBTIQuestionProps) => {
           />
           <div
             className={`w-[35px] h-[35px] rounded-full flex items-center justify-center ${
-              selectedOption === 2 ? 'bg-pink-500' : 'border-2 border-gray-300'
+              selectedOption === 2 ? 'bg-[#FF3296]' : 'border-2 border-gray-300'
             }`}
           >
             <span
@@ -68,7 +78,7 @@ const MBTIQuestion = ({ question }: MBTIQuestionProps) => {
                 selectedOption === 2 ? 'text-white' : 'text-transparent'
               } text-xs`}
             >
-              ✔️
+              <div className="w-[12px] h-[7px] bg-[url('/icons/mbti_check_2.svg')] bg-contain bg-no-repeat bg-center" />
             </span>
           </div>
           <span className="mt-2 text-transparent text-sm h-10"> </span>
@@ -78,7 +88,7 @@ const MBTIQuestion = ({ question }: MBTIQuestionProps) => {
         <label className="flex flex-col items-center cursor-pointer">
           <input
             type="radio"
-            name="response"
+            name={`response-${id}`}
             value="3"
             checked={selectedOption === 3}
             onChange={handleChange}
@@ -86,7 +96,7 @@ const MBTIQuestion = ({ question }: MBTIQuestionProps) => {
           />
           <div
             className={`w-[27px] h-[27px] rounded-full flex items-center justify-center ${
-              selectedOption === 3 ? 'bg-pink-500' : 'border-2 border-gray-300'
+              selectedOption === 3 ? 'bg-[#AAAAAA]' : 'border-2 border-gray-300'
             }`}
           >
             <span
@@ -94,7 +104,7 @@ const MBTIQuestion = ({ question }: MBTIQuestionProps) => {
                 selectedOption === 3 ? 'text-white' : 'text-transparent'
               } text-xs`}
             >
-              ✔️
+              <div className="w-[9px] h-[5px] bg-[url('/icons/mbti_check_3.svg')] bg-contain bg-no-repeat bg-center" />
             </span>
           </div>
           <span className="mt-2 pt-2.5 text-gray-700 text-sm h-10 text-center">
@@ -106,7 +116,7 @@ const MBTIQuestion = ({ question }: MBTIQuestionProps) => {
         <label className="flex flex-col items-center cursor-pointer">
           <input
             type="radio"
-            name="response"
+            name={`response-${id}`}
             value="4"
             checked={selectedOption === 4}
             onChange={handleChange}
@@ -114,7 +124,7 @@ const MBTIQuestion = ({ question }: MBTIQuestionProps) => {
           />
           <div
             className={`w-[35px] h-[35px] rounded-full flex items-center justify-center ${
-              selectedOption === 4 ? 'bg-pink-500' : 'border-2 border-gray-300'
+              selectedOption === 4 ? 'bg-[#8732FF]' : 'border-2 border-gray-300'
             }`}
           >
             <span
@@ -122,7 +132,7 @@ const MBTIQuestion = ({ question }: MBTIQuestionProps) => {
                 selectedOption === 4 ? 'text-white' : 'text-transparent'
               } text-xs`}
             >
-              ✔️
+              <div className="w-[12px] h-[7px] bg-[url('/icons/mbti_check_2.svg')] bg-contain bg-no-repeat bg-center" />
             </span>
           </div>
           <span className="mt-2 text-transparent text-sm h-10"> </span>
@@ -132,7 +142,7 @@ const MBTIQuestion = ({ question }: MBTIQuestionProps) => {
         <label className="flex flex-col items-center cursor-pointer">
           <input
             type="radio"
-            name="response"
+            name={`response-${id}`}
             value="5"
             checked={selectedOption === 5}
             onChange={handleChange}
@@ -140,7 +150,7 @@ const MBTIQuestion = ({ question }: MBTIQuestionProps) => {
           />
           <div
             className={`w-[49px] h-[49px] rounded-full flex items-center justify-center ${
-              selectedOption === 5 ? 'bg-pink-500' : 'border-2 border-gray-300'
+              selectedOption === 5 ? 'bg-[#8732FF]' : 'border-2 border-gray-300'
             }`}
           >
             <span
@@ -148,7 +158,7 @@ const MBTIQuestion = ({ question }: MBTIQuestionProps) => {
                 selectedOption === 5 ? 'text-white' : 'text-transparent'
               } text-xs`}
             >
-              ✔️
+              <div className="w-[16px] h-[9px] bg-[url('/icons/mbti_check_1.svg')] bg-contain bg-no-repeat bg-center" />
             </span>
           </div>
           <span className="mt-2 text-gray-700 text-sm h-10 text-center">
