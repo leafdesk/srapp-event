@@ -1,6 +1,8 @@
 'use client'
 
 import React from 'react'
+import { useAtom } from 'jotai'
+import { scoresAtom, finalResultAtom } from '@/app/mbti/store'
 
 const Field = ({ labelLeft, labelRight, score, color }: any) => {
   const parseLabel = (label: string) => {
@@ -37,6 +39,11 @@ const Field = ({ labelLeft, labelRight, score, color }: any) => {
 }
 
 const ResultPage = () => {
+  const [scores] = useAtom(scoresAtom)
+  const [finalResult] = useAtom(finalResultAtom)
+
+  console.log('결과 페이지: ', scores, finalResult)
+
   return (
     <>
       {/* 페이지 헤더 */}

@@ -29,8 +29,19 @@ const questionTypes: QuestionType = {
   20: 'E',
 }
 
+// 각 타입의 반대 타입 정의
+const oppositeTypes: { [key: string]: string } = {
+  V: 'D',
+  D: 'V',
+  A: 'R',
+  R: 'A',
+  I: 'S',
+  S: 'I',
+  E: 'O',
+  O: 'E',
+}
+
 export function calculateTypeScores(results: QuestionScore): TypeScores {
-  // 각 type의 점수 초기화
   const scores: TypeScores = {
     V: 0,
     D: 0,
@@ -46,20 +57,28 @@ export function calculateTypeScores(results: QuestionScore): TypeScores {
   for (const [questionId, score] of Object.entries(results)) {
     const type = questionTypes[parseInt(questionId)]
     if (type) {
-      scores[type] += score
+      if (score === 5) {
+        scores[type] += 2 // 5점: 해당 타입 점수 +2
+      } else if (score === 4) {
+        scores[type] += 1 // 4점: 해당 타입 점수 +1
+      } else if (score === 1) {
+        scores[oppositeTypes[type]] += 2 // 1점: 반대 타입 점수 +2
+      } else if (score === 2) {
+        scores[oppositeTypes[type]] += 1 // 2점: 반대 타입 점수 +1
+      }
     }
-  }
-
-  // 각 type의 평균 계산
-  for (const type in scores) {
-    scores[type] = scores[type] / 5 // 20개의 질문에서 type별로 5개의 질문이 있으므로 5로 나눔
   }
 
   return scores
 }
 
-export function determineResult(scores: TypeScores): { [key: string]: string } {
+export function determineResult(scores: TypeScores): {
+  result: { [key: string]: string }
+  percentages: { [key: string]: { percentage: number; type: string } }
+} {
   const result: { [key: string]: string } = {}
+  const percentages: { [key: string]: { percentage: number; type: string } } =
+    {}
 
   // 쌍 별로 결과 도출
   const pairs: [string, string][] = [
@@ -72,20 +91,26 @@ export function determineResult(scores: TypeScores): { [key: string]: string } {
   pairs.forEach(([type1, type2]) => {
     const score1 = scores[type1]
     const score2 = scores[type2]
+    const totalScore = score1 + score2
 
-    if (score1 > score2) {
-      result[type1 + '-' + type2] = type1
-    } else if (score2 > score1) {
-      result[type1 + '-' + type2] = type2
+    if (totalScore > 0) {
+      const percentage1 = Math.round((score1 / totalScore) * 100)
+      const percentage2 = Math.round((score2 / totalScore) * 100)
+
+      // Assign percentage to both types
+      result[type1 + '-' + type2] = score1 >= score2 ? type1 : type2
+      percentages[type1] = { percentage: percentage1, type: type1 }
+      percentages[type2] = { percentage: percentage2, type: type2 }
     } else {
-      // 동점일 경우 우선순위 적용 (V, R, S, E 우선)
-      if (['V', 'R', 'S', 'E'].includes(type1)) {
-        result[type1 + '-' + type2] = type1
-      } else {
-        result[type1 + '-' + type2] = type2
-      }
+      // 점수가 모두 0인 경우
+      result[type1 + '-' + type2] = 'None'
+      percentages[type1] = { percentage: 0, type: type1 }
+      percentages[type2] = { percentage: 0, type: type2 }
     }
   })
 
-  return result
+  return {
+    result,
+    percentages,
+  }
 }
