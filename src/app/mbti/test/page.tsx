@@ -7,9 +7,11 @@ import { mbtiQuestions } from './questions'
 import { useRouter } from 'next/navigation'
 import ProgressBar from '@/components/progress-bar'
 import { useCallback, useState } from 'react'
-import { calculateTypeScores, determineResult } from './calculate'
-import { useAtom } from 'jotai'
-import { scoresAtom, finalResultAtom } from '@/app/mbti/store'
+import {
+  calculateTypeScores,
+  createQueryParam,
+  determineResult,
+} from './calculate'
 
 const MBTITestPage = () => {
   const router = useRouter()
@@ -21,9 +23,6 @@ const MBTITestPage = () => {
     20 +
     (Object.values(answers).filter((answer) => answer !== null).length * 80) /
       totalQuestions
-
-  const [_, setScores] = useAtom(scoresAtom)
-  const [__, setFinalResult] = useAtom(finalResultAtom)
 
   const handleAnswerChange = useCallback((id: number, value: number) => {
     setAnswers((prev) => ({ ...prev, [id]: value }))
@@ -37,14 +36,17 @@ const MBTITestPage = () => {
       const calculatedFinalResult = determineResult(calculatedScores)
 
       console.log('answers:', answers, 'calculatedScores:', calculatedScores)
-      // Jotai 상태에 점수와 결과 저장
-      setScores(calculatedScores)
-      setFinalResult(calculatedFinalResult)
+
+      // 쿼리 파라미터 생성
+      const queryParam = createQueryParam(
+        calculatedScores,
+        calculatedFinalResult.result,
+      )
 
       // 결과 페이지로 이동
-      router.push('/mbti/result')
+      router.push(`/mbti/result?${queryParam}`)
     }
-  }, [answers, rate, router, setScores, setFinalResult])
+  }, [answers, rate, router])
 
   return (
     <>

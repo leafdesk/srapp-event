@@ -114,3 +114,23 @@ export function determineResult(scores: TypeScores): {
     percentages,
   }
 }
+
+export function createQueryParam(
+  scores: TypeScores,
+  result: { [key: string]: string },
+): string {
+  const queryParts: string[] = []
+
+  // 최종 결정된 4개의 알파벳과 각 퍼센트를 쿼리 파라미터 형식으로 변환
+  for (const [key, type] of Object.entries(result)) {
+    const percentage =
+      scores[type] > 0
+        ? Math.round(
+            (scores[type] / (scores[type] + scores[oppositeTypes[type]])) * 100,
+          )
+        : 0
+    queryParts.push(`${type}${percentage}`)
+  }
+
+  return `p=${queryParts.join('')}`
+}

@@ -1,65 +1,55 @@
 'use client'
 
-import React from 'react'
-import { useAtom } from 'jotai'
-import { scoresAtom, finalResultAtom } from '@/app/mbti/store'
+import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import mbtiTypes from './mbti-types'
-
-const Field = ({
-  labelLeft,
-  labelRight,
-  scoreLeft,
-  scoreRight,
-  color,
-}: any) => {
-  const parseLabel = (label: string) => {
-    const [kr, en] = label.split(' ') // 공백을 기준으로 한국어와 영어 분리
-    return { kr, en }
-  }
-
-  const { kr: krLeft, en: enLeft } = parseLabel(labelLeft)
-  const { kr: krRight, en: enRight } = parseLabel(labelRight)
-
-  return (
-    <div className="grid items-center mb-4">
-      {/* 상태 바 */}
-      <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden mb-2">
-        <div
-          className="h-2 rounded-full"
-          style={{ width: `${scoreLeft}%`, backgroundColor: color }}
-        />
-      </div>
-
-      {/* 라벨 */}
-      <div className="flex items-center justify-between">
-        <div>
-          <div>
-            <span className="font-medium">{krLeft}</span>{' '}
-            <span className="font-normal">{enLeft}</span>
-          </div>
-          <span>{scoreLeft}%</span>
-        </div>
-        <div>
-          <div>
-            <span className="font-medium">{krRight}</span>{' '}
-            <span className="font-normal">{enRight}</span>
-          </div>
-          <span>{scoreRight}%</span>
-        </div>
-      </div>
-    </div>
-  )
-}
+import Field from './field'
 
 const ResultPage = () => {
-  const [scores] = useAtom(scoresAtom)
-  const [finalResult] = useAtom(finalResultAtom)
+  const router = useRouter()
+  const [finalResult, setFinalResult] = useState<{
+    result: { [key: string]: string }
+    percentages: { [key: string]: { percentage: number; type: string } }
+  } | null>(null)
 
-  console.log('결과 페이지: ', scores, finalResult)
+  // 쿼리 파라미터에서 결과를 가져오는 함수
+  const getResultsFromQuery = (query: string) => {
+    const results = query.split('p=')[1]
+    if (results) {
+      const percentages = results.match(/([A-Z])(\d+)/g)
+      const resultObj: { [key: string]: { percentage: number; type: string } } =
+        {}
+      percentages?.forEach((item) => {
+        const type = item[0]
+        const percentage = parseInt(item.slice(1), 10)
+        resultObj[type] = { percentage, type }
+      })
+      return resultObj
+    }
+    return null
+  }
+
+  useEffect(() => {
+    // 쿼리 파라미터에서 결과를 가져옵니다.
+    const query = window.location.search
+    const percentagesFromQuery = getResultsFromQuery(query)
+
+    if (percentagesFromQuery) {
+      // 쿼리 파라미터에서 가져온 결과로 상태를 설정합니다.
+      const mbtiType = Object.keys(percentagesFromQuery).join('') // A, B, C, D 형태로 MBTI 타입 생성
+      setFinalResult({
+        result: { [mbtiType]: mbtiType }, // MBTI 타입을 설정
+        percentages: percentagesFromQuery,
+      })
+    } else {
+      // 결과가 없으면 웰컴 페이지로 리다이렉트
+      router.push('/mbti/welcome')
+    }
+  }, [router])
 
   // finalResult에서 MBTI 타입을 가져옵니다.
   const mbtiType = finalResult
-    ? Object.values(finalResult.result).join('')
+    ? Object.keys(finalResult.result).join('')
     : '결과 없음'
 
   // mbtiTypes에서 해당하는 정보를 검색
@@ -93,7 +83,7 @@ const ResultPage = () => {
       </h3>
 
       {/* 나의 세부 항목 */}
-      <div className="px-4">
+      <div className="px-4 mb-5">
         <div className="w-full rounded-[10px] px-4 py-5 border border-[#DDD]">
           <h2 className="font-normal text-base text-[#888] mb-10">
             나의 세부 항목
@@ -131,7 +121,17 @@ const ResultPage = () => {
       </div>
 
       {/* MBTI 타입 설명 */}
-      <p className="mt-4 text-[#555]">{description}</p>
+      <p className="mt-4 px-4 text-[#555] mb-[60px]">{description}</p>
+
+      {/* 공유 & 처음으로 버튼 */}
+      <div className="px-4 grid gap-2.5 pb-10">
+        <button className="w-full h-[60px] bg-[#333] text-[#fff] font-medium text-[20px] rounded-lg">
+          공유하기
+        </button>
+        <button className="w-full h-[60px] bg-[#fff] text-[#333] font-medium text-[20px] rounded-lg border border-[#DDD] mt-2.5">
+          처음으로
+        </button>
+      </div>
     </>
   )
 }
