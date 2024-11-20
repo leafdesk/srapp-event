@@ -37,7 +37,7 @@ const Field = ({
       : color === '#F29194'
       ? 'text-[#F29194]'
       : color === '#6BD0A5'
-      ? 'text-[#005531]'
+      ? 'text-[#6BD0A5]'
       : 'text-[#555]'
 
   const NON_SELECTED_COLOR = 'text-[#555]'
