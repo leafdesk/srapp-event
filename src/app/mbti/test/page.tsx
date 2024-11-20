@@ -11,7 +11,10 @@ import {
   calculateTypeScores,
   createQueryParam,
   determineResult,
+  generateAPIRequestData,
 } from './calculate'
+import { submitMBTI } from './mbti-action'
+import { LOCAL_STORAGE_PROFILE_KEY } from './constants'
 
 const MBTITestPage = () => {
   const router = useRouter()
@@ -28,22 +31,38 @@ const MBTITestPage = () => {
     setAnswers((prev) => ({ ...prev, [id]: value }))
   }, [])
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     if (rate < 100) {
       setIsModalOpen(true)
     } else {
       const calculatedScores = calculateTypeScores(answers)
       const calculatedFinalResult = determineResult(calculatedScores)
 
-      console.log('answers:', answers, 'calculatedScores:', calculatedScores)
-
-      // 쿼리 파라미터 생성
       const queryParam = createQueryParam(
         calculatedScores,
         calculatedFinalResult.result,
       )
+      const mbtiType = Object.values(calculatedFinalResult.result).join('')
 
-      // 결과 페이지로 이동
+      const profileData = JSON.parse(
+        localStorage.getItem(LOCAL_STORAGE_PROFILE_KEY) || '{}',
+      )
+
+      const apiRequestData = generateAPIRequestData(
+        profileData,
+        mbtiType,
+        calculatedFinalResult.percentages,
+        answers,
+      )
+
+      console.log(apiRequestData)
+
+      try {
+        const result = await submitMBTI(apiRequestData)
+        console.log(result)
+      } catch (error) {
+        console.error('Error submitting data:', error)
+      }
       router.push(`/mbti/result?${queryParam}`)
     }
   }, [answers, rate, router])

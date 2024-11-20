@@ -134,3 +134,40 @@ export function createQueryParam(
 
   return `p=${queryParts.join('')}`
 }
+
+type APIRequestData = {
+  affiliation: string
+  gender: string
+  age: string
+  mbti: string
+  percentages: { [key: string]: number }
+  answers: { [key: number]: number }
+}
+
+/**
+ * API 요청을 생성하는 함수.
+ */
+export function generateAPIRequestData(
+  profile: { affiliation: string; gender: string; age: string },
+  mbtiType: string,
+  percentages: { [key: string]: { percentage: number; type: string } },
+  answers: QuestionScore,
+): APIRequestData {
+  return {
+    affiliation: profile.affiliation,
+    gender: profile.gender,
+    age: profile.age,
+    mbti: mbtiType,
+    percentages: {
+      V: percentages.V ? percentages.V.percentage : 0,
+      D: percentages.D ? percentages.D.percentage : 0,
+      A: percentages.A ? percentages.A.percentage : 0,
+      R: percentages.R ? percentages.R.percentage : 0,
+      I: percentages.I ? percentages.I.percentage : 0,
+      S: percentages.S ? percentages.S.percentage : 0,
+      E: percentages.E ? percentages.E.percentage : 0,
+      O: percentages.O ? percentages.O.percentage : 0,
+    },
+    answers: answers,
+  }
+}

@@ -60,6 +60,46 @@ const ResultPage = () => {
   // 각 필드에 대한 퍼센트 정보 가져오기
   const percentages = finalResult ? finalResult.percentages : {}
 
+  // TODO: Calculate the percentages for the remaining types
+  const calculateOpposingPercentages = (percentages: {
+    [key: string]: { percentage: number; type: string }
+  }) => {
+    const opposingPairs: [string, string][] = [
+      ['I', 'S'],
+      ['E', 'O'],
+      ['V', 'D'],
+      ['A', 'R'],
+    ]
+
+    const calculatedPercentages: {
+      [key: string]: { percentage: number; type: string }
+    } = { ...percentages }
+
+    opposingPairs.forEach(([type1, type2]) => {
+      if (calculatedPercentages[type1]) {
+        const percentage1 = calculatedPercentages[type1].percentage
+        calculatedPercentages[type2] = {
+          percentage: 100 - percentage1,
+          type: type2,
+        }
+      } else if (calculatedPercentages[type2]) {
+        const percentage2 = calculatedPercentages[type2].percentage
+        calculatedPercentages[type1] = {
+          percentage: 100 - percentage2,
+          type: type1,
+        }
+      }
+    })
+
+    return calculatedPercentages
+  }
+
+  // Calculate the complete percentages including opposing types
+  const completePercentages = calculateOpposingPercentages(percentages)
+
+  // Use completePercentages in your rendering logic
+  console.log(completePercentages)
+
   return (
     <>
       {/* 페이지 헤더 */}
@@ -92,29 +132,45 @@ const ResultPage = () => {
           <Field
             labelLeft="언어형 Verbal"
             labelRight="행동형 Decisive"
-            scoreLeft={percentages['V'] ? percentages['V'].percentage : 0}
-            scoreRight={percentages['D'] ? percentages['D'].percentage : 0}
+            scoreLeft={
+              completePercentages['V'] ? completePercentages['V'].percentage : 0
+            }
+            scoreRight={
+              completePercentages['D'] ? completePercentages['D'].percentage : 0
+            }
             color="#5EC6E8"
           />
           <Field
             labelLeft="적극형 Active"
             labelRight="반응형 Reactive"
-            scoreLeft={percentages['A'] ? percentages['A'].percentage : 0}
-            scoreRight={percentages['R'] ? percentages['R'].percentage : 0}
+            scoreLeft={
+              completePercentages['A'] ? completePercentages['A'].percentage : 0
+            }
+            scoreRight={
+              completePercentages['R'] ? completePercentages['R'].percentage : 0
+            }
             color="#ECC369"
           />
           <Field
             labelLeft="강렬형 Instense"
             labelRight="담백형 Simple"
-            scoreLeft={percentages['I'] ? percentages['I'].percentage : 0}
-            scoreRight={percentages['S'] ? percentages['S'].percentage : 0}
+            scoreLeft={
+              completePercentages['I'] ? completePercentages['I'].percentage : 0
+            }
+            scoreRight={
+              completePercentages['S'] ? completePercentages['S'].percentage : 0
+            }
             color="#F29194"
           />
           <Field
             labelLeft="기억형 Retentive"
             labelRight="미래형 Visionary"
-            scoreLeft={percentages['E'] ? percentages['E'].percentage : 0}
-            scoreRight={percentages['O'] ? percentages['O'].percentage : 0}
+            scoreLeft={
+              completePercentages['E'] ? completePercentages['E'].percentage : 0
+            }
+            scoreRight={
+              completePercentages['O'] ? completePercentages['O'].percentage : 0
+            }
             color="#6BD0A5"
           />
         </div>
