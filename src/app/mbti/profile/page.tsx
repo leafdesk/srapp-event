@@ -6,6 +6,7 @@ import Input from '@/components/input'
 import ProgressBar from '@/components/progress-bar'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { LOCAL_STORAGE_PROFILE_KEY } from '../test/constants'
 
 const RATE = 20
 
@@ -29,12 +30,11 @@ const ProfilePage = () => {
 
   const handleSelect = (value: string) => {
     setProfile((prev) => ({ ...prev, gender: value }))
-    console.log('Selected value:', value)
   }
 
   const handleSubmit = () => {
-    console.log('Profile Data:', JSON.stringify(profile))
-    // TODO: 추후 profile data 활용.
+    // Save profile data to local storage
+    localStorage.setItem(LOCAL_STORAGE_PROFILE_KEY, JSON.stringify(profile))
     router.push('/mbti/test')
   }
 
