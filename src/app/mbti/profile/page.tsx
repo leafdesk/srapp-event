@@ -70,19 +70,20 @@ const ProfilePage = () => {
           placeholder="성별을 선택해주세요."
           onSelect={handleSelect}
         />
-        <Input
+        <Dropdown
+          options={['20대', '30대', '40대', '50대', '60대', '70대 이상']}
           placeholder="연령을 선택해주세요."
-          type="number"
-          value={profile.age}
-          onChange={(e) =>
-            setProfile((prev) => ({ ...prev, age: e.target.value }))
-          }
+          onSelect={(value) => setProfile((prev) => ({ ...prev, age: value }))}
         />
       </div>
 
       {/* 하단 버튼 */}
       <div className="pb-5 fixed bottom-0 w-full">
-        <Button onClick={handleSubmit} text="다음" />
+        <Button
+          onClick={handleSubmit}
+          text="다음"
+          disabled={!profile.affiliation || !profile.gender || !profile.age}
+        />
       </div>
     </main>
   )

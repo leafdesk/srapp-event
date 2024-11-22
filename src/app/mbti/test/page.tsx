@@ -129,7 +129,7 @@ const MBTITestPage = () => {
                 모든 질문에 답변해 주세요.
               </h3>
               <span className="block w-full text-base text-center text-[#222] pb-10 ">
-                현재 응답률: {rate}%
+                현재 진행률: {rate}%
               </span>
               <Button onClick={() => setIsModalOpen(false)} text="확인" />
             </div>

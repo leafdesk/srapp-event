@@ -3,6 +3,7 @@ type ButtonProps = {
   bgColor?: string
   textColor?: string
   text?: string
+  disabled?: boolean
 }
 
 /**
@@ -13,12 +14,16 @@ const Button = ({
   bgColor = '#FF3296',
   textColor = 'white',
   text = '',
+  disabled = false,
 }: ButtonProps) => {
   return (
     <div className="px-4">
       <button
-        onClick={onClick}
-        className={`w-full h-[60px] rounded-lg flex items-center justify-center bg-[${bgColor}] font-medium text-xl text-${textColor}`}
+        onClick={disabled ? undefined : onClick}
+        className={`w-full h-[60px] rounded-lg flex items-center justify-center bg-[${bgColor}] font-medium text-xl text-${textColor} ${
+          disabled ? 'opacity-50 cursor-not-allowed' : ''
+        }`}
+        disabled={disabled}
       >
         {text}
       </button>
