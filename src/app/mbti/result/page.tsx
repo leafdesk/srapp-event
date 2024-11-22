@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import mbtiTypes from './mbti-types'
 import Field from './field'
+import Image from 'next/image'
 
 const ResultPage = () => {
   const router = useRouter()
@@ -100,6 +101,16 @@ const ResultPage = () => {
   // Use completePercentages in your rendering logic
   console.log(completePercentages)
 
+  const emoji = mbtiInfo ? mbtiInfo.id : null
+  // const EMOJI_URL = `bg-[url("/images/emoji/${emoji}2.png")]`
+
+  if (!finalResult) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p>Loading...</p>
+      </div>
+    )
+  }
   return (
     <>
       {/* 페이지 헤더 */}
@@ -108,8 +119,16 @@ const ResultPage = () => {
       </h3>
 
       {/* Emoji */}
-      <div className="px-4">
-        <div className="bg-[#D9D9D9] w-full h-[300px]" />
+      <div className="px-4 flex items-center justify-center h-[220px]">
+        {/* <div
+          className={`${EMOJI_URL} bg-contain bg-center bg-no-repeat w-[220px] h-[220px]`}
+        /> */}
+        <Image
+          src={`/images/emoji/${emoji ? emoji : 'default'}2.png`}
+          alt={emoji || 'default'}
+          width={220}
+          height={220}
+        />
       </div>
 
       {/* MBTI 타입 */}
@@ -181,10 +200,29 @@ const ResultPage = () => {
 
       {/* 공유 & 처음으로 버튼 */}
       <div className="px-4 grid gap-2.5 pb-10">
-        <button className="w-full h-[60px] bg-[#333] text-[#fff] font-medium text-[20px] rounded-lg">
+        <button
+          onClick={() => {
+            if (navigator.share) {
+              navigator
+                .share({
+                  title: '내 사랑 긍휼 유형을 확인하세요!',
+                  // text: '내 사랑 긍휼 유형을 확인하세요!',
+                  url: window.location.href,
+                })
+                .then(() => console.log('Shared successfully'))
+                .catch((error) => console.error('Error sharing:', error))
+            } else {
+              console.log('Sharing not supported')
+            }
+          }}
+          className="w-full h-[60px] bg-[#333] text-[#fff] font-medium text-[20px] rounded-lg"
+        >
           공유하기
         </button>
-        <button className="w-full h-[60px] bg-[#fff] text-[#333] font-medium text-[20px] rounded-lg border border-[#DDD] mt-2.5">
+        <button
+          onClick={() => router.push('/mbti/welcome')}
+          className="w-full h-[60px] bg-[#fff] text-[#333] font-medium text-[20px] rounded-lg border border-[#DDD] mt-2.5"
+        >
           처음으로
         </button>
       </div>
