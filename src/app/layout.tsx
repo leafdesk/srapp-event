@@ -26,10 +26,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta
-          property="og:title"
-          content="2024 성락인의 행복한 헌신을 응원하며"
-        />
+        <meta property="og:title" content="내 사랑 긍휼 유형을 확인하세요!" />
+        <meta property="og:description" content="Love & Compassion" />
         <meta
           property="og:image"
           content="https://sungrak.vercel.app/images/devotion_thumbnail.jpg"
