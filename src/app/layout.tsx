@@ -1,17 +1,17 @@
 import type { Metadata } from 'next'
-import localFont from 'next/font/local'
+// import localFont from 'next/font/local'
 import '@/styles/globals.css'
 
-const geistSans = localFont({
-  src: '../styles/fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
-})
-const geistMono = localFont({
-  src: '../styles/fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900',
-})
+// const geistSans = localFont({
+//   src: '../styles/fonts/GeistVF.woff',
+//   variable: '--font-geist-sans',
+//   weight: '100 900',
+// })
+// const geistMono = localFont({
+//   src: '../styles/fonts/GeistMonoVF.woff',
+//   variable: '--font-geist-mono',
+//   weight: '100 900',
+// })
 
 export const metadata: Metadata = {
   title: '성락교회 SUNGRAK CHURCH',
@@ -37,7 +37,10 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={
+          // ${geistSans.variable} ${geistMono.variable}
+          `antialiased`
+        }
       >
         {children}
       </body>
