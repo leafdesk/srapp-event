@@ -38,15 +38,22 @@ const MBTITestPage = () => {
       const calculatedScores = calculateTypeScores(answers)
       const calculatedFinalResult = determineResult(calculatedScores)
 
+      console.log('calculatedScores:', calculatedScores)
+      console.log('calculatedFinalResult:', calculatedFinalResult)
+
       const queryParam = createQueryParam(
-        calculatedScores,
         calculatedFinalResult.result,
+        calculatedFinalResult.percentages,
       )
       const mbtiType = Object.values(calculatedFinalResult.result).join('')
 
       const profileData = JSON.parse(
         localStorage.getItem(LOCAL_STORAGE_PROFILE_KEY) || '{}',
       )
+
+      console.log('queryParam:', queryParam)
+      console.log('mbtiType:', mbtiType)
+      console.log('profileData:', profileData)
 
       const apiRequestData = generateAPIRequestData(
         profileData,
@@ -55,7 +62,7 @@ const MBTITestPage = () => {
         answers,
       )
 
-      console.log(apiRequestData)
+      console.log('apiRequestData:', apiRequestData)
 
       try {
         const result = await submitMBTI(apiRequestData)
