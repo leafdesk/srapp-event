@@ -2,6 +2,10 @@
 
 import axios from 'axios'
 
+const SUNGRAK_API_SERVER = 'https://api.sungrak.click'
+
+axios.defaults.baseURL = SUNGRAK_API_SERVER
+
 interface SubmitMBTIData {
   answers: { [key: number]: number }
 }
@@ -11,7 +15,7 @@ interface SubmitMBTIData {
  */
 export const submitMBTI = async (data: SubmitMBTIData) => {
   try {
-    const response = await axios.post('/api/mbti', data)
+    const response = await axios.post('/event-api/mbti', data) // Use the updated endpoint
     return response.data // 성공적인 응답 데이터 반환
   } catch (error) {
     console.error('Error submitting MBTI data:', error)
