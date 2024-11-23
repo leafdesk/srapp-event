@@ -71,7 +71,16 @@ const ProfilePage = () => {
           onSelect={handleSelect}
         />
         <Dropdown
-          options={['20대', '30대', '40대', '50대', '60대', '70대 이상']}
+          options={[
+            '10대 미만',
+            '10대',
+            '20대',
+            '30대',
+            '40대',
+            '50대',
+            '60대',
+            '70대 이상',
+          ]}
           placeholder="연령을 선택해주세요."
           onSelect={(value) => setProfile((prev) => ({ ...prev, age: value }))}
         />
