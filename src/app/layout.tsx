@@ -30,7 +30,7 @@ export default function RootLayout({
         <meta property="og:description" content="Love & Compassion" />
         <meta
           property="og:image"
-          content="https://sungrak.vercel.app/images/devotion_thumbnail.jpg"
+          content="https://sungrak.vercel.app/images/mbti_thumbnail.jpeg"
         />
       </head>
 
