@@ -21,6 +21,7 @@ const MBTITestPage = () => {
 
   const [answers, setAnswers] = useState<{ [key: number]: number }>({})
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const totalQuestions = mbtiQuestions.length
   const rate =
     20 +
@@ -32,8 +33,10 @@ const MBTITestPage = () => {
   }, [])
 
   const handleSubmit = useCallback(async () => {
+    setIsLoading(true)
     if (rate < 100) {
       setIsModalOpen(true)
+      setIsLoading(false)
     } else {
       const calculatedScores = calculateTypeScores(answers)
       const calculatedFinalResult = determineResult(calculatedScores)
@@ -67,10 +70,13 @@ const MBTITestPage = () => {
       try {
         const result = await submitMBTI(apiRequestData)
         console.log(result)
+        router.push(`/mbti/result?${queryParam}`)
       } catch (error) {
         console.error('Error submitting data:', error)
+        alert('데이터 제출에 실패했습니다. 다시 시도해 주세요.')
+      } finally {
+        setIsLoading(false)
       }
-      router.push(`/mbti/result?${queryParam}`)
     }
   }, [answers, rate, router])
 
@@ -124,7 +130,11 @@ const MBTITestPage = () => {
 
       {/* 하단 버튼 */}
       <div className="pb-5 fixed bottom-0 w-full">
-        <Button onClick={handleSubmit} text="다음" />
+        <Button
+          onClick={handleSubmit}
+          text={isLoading ? '로딩 중...' : '다음'}
+          disabled={isLoading}
+        />
       </div>
 
       {/* 답변 누락 알림을 위한 모달 */}
