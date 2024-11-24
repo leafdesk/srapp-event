@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import mbtiTypes from './mbti-types'
 import Field from './field'
 import Image from 'next/image'
+import Modal from '@/components/modal'
+import Button from '@/components/button'
 
 const ResultPage = () => {
   const router = useRouter()
@@ -12,6 +14,8 @@ const ResultPage = () => {
     result: { [key: string]: string }
     percentages: { [key: string]: { percentage: number; type: string } }
   } | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalMessage, setModalMessage] = useState('')
 
   // 쿼리 파라미터에서 결과를 가져오는 함수
   const getResultsFromQuery = (query: string) => {
@@ -103,6 +107,42 @@ const ResultPage = () => {
 
   const emoji = mbtiInfo ? mbtiInfo.id : null
   // const EMOJI_URL = `bg-[url("/images/emoji/${emoji}2.png")]`
+
+  const handleShare = () => {
+    const shareData = {
+      title: '내 사랑 긍휼 유형을 확인하세요!',
+      url: window.location.href,
+    }
+
+    const isIOS =
+      /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream
+    const isAndroid = /Android/.test(navigator.userAgent)
+
+    if (isIOS && navigator.share) {
+      navigator.share(shareData).then(() => console.log('Shared successfully'))
+      // .catch((error) => {
+      //   console.error('Error sharing:', error)
+      //   setModalMessage('공유에 실패했습니다. 다시 시도해 주세요.')
+      //   setIsModalOpen(true)
+      // })
+    } else if (isAndroid) {
+      navigator.clipboard.writeText(shareData.url).then(() => {
+        setModalMessage(
+          'URL이 클립보드에 복사되었습니다. 다른 앱에서 붙여넣기 하세요.',
+        )
+        setIsModalOpen(true)
+      })
+      // .catch((error) => {
+      //   console.error('Failed to copy: ', error)
+      //   setModalMessage('URL 복사에 실패했습니다. 다시 시도해 주세요.')
+      //   setIsModalOpen(true)
+      // })
+    } else {
+      // console.log('Sharing not supported')
+      // setModalMessage('이 기기는 공유 기능을 지원하지 않습니다.')
+      // setIsModalOpen(true)
+    }
+  }
 
   if (!finalResult) {
     return (
@@ -216,20 +256,7 @@ const ResultPage = () => {
       {/* 공유 & 처음으로 버튼 */}
       <div className="px-4 grid gap-2.5 pb-10">
         <button
-          onClick={() => {
-            if (navigator.share) {
-              navigator
-                .share({
-                  title: '내 사랑 긍휼 유형을 확인하세요!',
-                  // text: '내 사랑 긍휼 유형을 확인하세요!',
-                  url: window.location.href,
-                })
-                .then(() => console.log('Shared successfully'))
-                .catch((error) => console.error('Error sharing:', error))
-            } else {
-              console.log('Sharing not supported')
-            }
-          }}
+          onClick={handleShare}
           className="w-full h-[60px] bg-[#333] text-[#fff] font-medium text-[20px] rounded-lg"
         >
           공유하기
@@ -241,6 +268,22 @@ const ResultPage = () => {
           처음으로
         </button>
       </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <Modal setIsOpen={setIsModalOpen} background={true}>
+          <div className="fixed top-[260px] w-full z-[100] px-4">
+            <div className="bg-white w-full py-5 rounded-2xl">
+              <h3 className="px-4 font-medium text-lg py-5 text-center">
+                URL이 클립보드에 복사되었습니다.
+                <br />
+                다른 앱에서 붙여넣기 하세요.
+              </h3>
+              <Button onClick={() => setIsModalOpen(false)} text="확인" />
+            </div>
+          </div>
+        </Modal>
+      )}
     </>
   )
 }
