@@ -196,7 +196,22 @@ const ResultPage = () => {
       </div>
 
       {/* MBTI 타입 설명 */}
-      <p className="mt-4 px-4 text-[#555] mb-[60px]">{description}</p>
+      <div className="mb-[60px]">
+        {description.split('|').map((paragraph, index) => (
+          <p
+            key={index}
+            className="mt-5 px-4 text-[#555] break-keep leading-[26px] tracking[-0.03em]"
+          >
+            {paragraph.split(/\*\*(.*?)\*\*/g).map((part, partIndex) =>
+              partIndex % 2 === 1 ? ( // 볼드 처리할 부분
+                <strong key={partIndex}>{part}</strong>
+              ) : (
+                part // 일반 텍스트
+              ),
+            )}
+          </p>
+        ))}
+      </div>
 
       {/* 공유 & 처음으로 버튼 */}
       <div className="px-4 grid gap-2.5 pb-10">
