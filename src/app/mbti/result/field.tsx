@@ -45,7 +45,7 @@ const Field = ({
   return (
     <div className="grid items-center mb-4">
       {/* 상태 바 */}
-      <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden mb-2 relative">
+      <div className="w-full h-2 bg-white rounded-full overflow-hidden mb-2 relative">
         <div
           className="h-2 rounded-full"
           style={{
