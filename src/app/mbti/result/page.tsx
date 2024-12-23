@@ -9,7 +9,7 @@ import Modal from '@/components/modal'
 import Button from '@/components/button'
 import { LOCAL_STORAGE_RESULT_KEY } from '../test/constants'
 
-const ResultPage = () => {
+function ResultContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [finalResult, setFinalResult] = useState<{
@@ -50,9 +50,9 @@ const ResultPage = () => {
 
     if (percentagesFromQuery) {
       // 쿼리 파라미터에서 가져온 결과로 상태를 설정합니다.
-      const mbtiType = Object.keys(percentagesFromQuery).join('') // A, B, C, D 형태로 MBTI 타입 생성
+      const mbtiType = Object.keys(percentagesFromQuery).join('')
       setFinalResult({
-        result: { [mbtiType]: mbtiType }, // MBTI 타입을 설정
+        result: { [mbtiType]: mbtiType },
         percentages: percentagesFromQuery,
       })
     } else {
@@ -74,7 +74,6 @@ const ResultPage = () => {
   // 각 필드에 대한 퍼센트 정보 가져오기
   const percentages = finalResult ? finalResult.percentages : {}
 
-  // TODO: Calculate the percentages for the remaining types
   const calculateOpposingPercentages = (percentages: {
     [key: string]: { percentage: number; type: string }
   }) => {
@@ -108,14 +107,8 @@ const ResultPage = () => {
     return calculatedPercentages
   }
 
-  // Calculate the complete percentages including opposing types
   const completePercentages = calculateOpposingPercentages(percentages)
-
-  // Use completePercentages in your rendering logic
-  console.log(completePercentages)
-
   const emoji = mbtiInfo ? mbtiInfo.id : null
-  // const EMOJI_URL = `bg-[url("/images/emoji/${emoji}2.png")]`
 
   const handleShare = () => {
     const shareData = {
@@ -136,7 +129,6 @@ const ResultPage = () => {
         )
         setIsModalOpen(true)
       })
-    } else {
     }
   }
 
@@ -147,18 +139,14 @@ const ResultPage = () => {
       </div>
     )
   }
+
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      {/* 페이지 헤더 */}
+    <>
       <h3 className="h-[52px] flex items-center justify-center font-medium text-base text-[#222] mb-2.5">
         결과보기
       </h3>
 
-      {/* Emoji */}
       <div className="px-4 flex items-center justify-center h-[220px]">
-        {/* <div
-          className={`${EMOJI_URL} bg-contain bg-center bg-no-repeat w-[220px] h-[220px]`}
-        /> */}
         <Image
           src={`/images/emoji/${emoji ? emoji : 'default'}2.png`}
           alt={emoji || 'default'}
@@ -167,17 +155,14 @@ const ResultPage = () => {
         />
       </div>
 
-      {/* MBTI 타입 */}
       <strong className="block w-full px-4 mt-5 mb-2.5 text-[#333] font-medium text-base">
         {mbtiType}
       </strong>
 
-      {/* MBTI 타입 제목 */}
       <h3 className="block w-full px-4 text-[#222] font-semibold text-[22px] mb-5">
         {title}
       </h3>
 
-      {/* 나의 세부 항목 */}
       <div className="px-4 mb-5">
         <div className="w-full rounded-[10px] px-4 py-5 border border-[#DDD]">
           <h2 className="font-normal text-base text-[#888] mb-10">
@@ -231,25 +216,25 @@ const ResultPage = () => {
         </div>
       </div>
 
-      {/* MBTI 타입 설명 */}
       <div className="mb-[60px]">
         {description.split('|').map((paragraph, index) => (
           <p
             key={index}
             className="mt-5 px-4 text-[#555] break-keep leading-[26px] tracking[-0.03em]"
           >
-            {paragraph.split(/\*\*(.*?)\*\*/g).map((part, partIndex) =>
-              partIndex % 2 === 1 ? ( // 볼드 처리할 부분
-                <strong key={partIndex}>{part}</strong>
-              ) : (
-                part // 일반 텍스트
-              ),
-            )}
+            {paragraph
+              .split(/\*\*(.*?)\*\*/g)
+              .map((part, partIndex) =>
+                partIndex % 2 === 1 ? (
+                  <strong key={partIndex}>{part}</strong>
+                ) : (
+                  part
+                ),
+              )}
           </p>
         ))}
       </div>
 
-      {/* 공유 & 처음으로 버튼 */}
       <div className="px-4 grid gap-2.5 pb-10">
         {hasSParam ? (
           <button
@@ -266,12 +251,6 @@ const ResultPage = () => {
             테스트 결과 공유하기
           </button>
         )}
-        {/* <button
-          onClick={() => router.push('/mbti/welcome')}
-          className="w-full h-[60px] bg-[#fff] text-[#333] font-medium text-[20px] rounded-lg border border-[#DDD] mt-2.5"
-        >
-          처음으로
-        </button> */}
         <button
           onClick={() => router.push('/mbti/explore')}
           className="w-full h-[60px] bg-[#fff] text-[#333] font-medium text-[20px] rounded-lg border border-[#DDD] mt-2.5"
@@ -280,7 +259,6 @@ const ResultPage = () => {
         </button>
       </div>
 
-      {/* Love and Compassion 카드 뉴스 */}
       <div className="px-4 flex flex-col gap-5">
         <div
           className="relative w-full"
@@ -332,10 +310,8 @@ const ResultPage = () => {
         </div>
       </div>
 
-      {/* blank */}
       <div className="h-16" />
 
-      {/* Modal */}
       {isModalOpen && (
         <Modal setIsOpen={setIsModalOpen} background={true}>
           <div className="fixed top-[260px] w-full z-[100] px-4">
@@ -350,6 +326,15 @@ const ResultPage = () => {
           </div>
         </Modal>
       )}
+    </>
+  )
+}
+
+// 메인 컴포넌트
+const ResultPage = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResultContent />
     </Suspense>
   )
 }
