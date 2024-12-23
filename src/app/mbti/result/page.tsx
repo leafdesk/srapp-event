@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import mbtiTypes from './mbti-types'
 import Field from './field'
 import Image from 'next/image'
@@ -11,6 +11,7 @@ import { LOCAL_STORAGE_RESULT_KEY } from '../test/constants'
 
 const ResultPage = () => {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [finalResult, setFinalResult] = useState<{
     result: { [key: string]: string }
     percentages: { [key: string]: { percentage: number; type: string } }
@@ -114,7 +115,7 @@ const ResultPage = () => {
   const handleShare = () => {
     const shareData = {
       title: '내 사랑 긍휼 유형을 확인하세요!',
-      url: window.location.href,
+      url: `${window.location.href}&s=1`,
     }
 
     const isIOS =
@@ -123,11 +124,6 @@ const ResultPage = () => {
 
     if (isIOS && navigator.share) {
       navigator.share(shareData).then(() => console.log('Shared successfully'))
-      // .catch((error) => {
-      //   console.error('Error sharing:', error)
-      //   setModalMessage('공유에 실패했습니다. 다시 시도해 주세요.')
-      //   setIsModalOpen(true)
-      // })
     } else if (isAndroid) {
       navigator.clipboard.writeText(shareData.url).then(() => {
         setModalMessage(
@@ -135,17 +131,11 @@ const ResultPage = () => {
         )
         setIsModalOpen(true)
       })
-      // .catch((error) => {
-      //   console.error('Failed to copy: ', error)
-      //   setModalMessage('URL 복사에 실패했습니다. 다시 시도해 주세요.')
-      //   setIsModalOpen(true)
-      // })
     } else {
-      // console.log('Sharing not supported')
-      // setModalMessage('이 기기는 공유 기능을 지원하지 않습니다.')
-      // setIsModalOpen(true)
     }
   }
+
+  const hasSParam = searchParams.has('s')
 
   if (!finalResult) {
     return (
@@ -258,12 +248,21 @@ const ResultPage = () => {
 
       {/* 공유 & 처음으로 버튼 */}
       <div className="px-4 grid gap-2.5 pb-10">
-        <button
-          onClick={handleShare}
-          className="w-full h-[60px] bg-[#333] text-[#fff] font-medium text-[20px] rounded-lg"
-        >
-          공유하기
-        </button>
+        {hasSParam ? (
+          <button
+            onClick={() => router.push('/mbti/welcome')}
+            className="w-full h-[60px] bg-[#333] text-[#fff] font-medium text-[20px] rounded-lg"
+          >
+            나도 테스트하기
+          </button>
+        ) : (
+          <button
+            onClick={handleShare}
+            className="w-full h-[60px] bg-[#333] text-[#fff] font-medium text-[20px] rounded-lg"
+          >
+            테스트 결과 공유하기
+          </button>
+        )}
         {/* <button
           onClick={() => router.push('/mbti/welcome')}
           className="w-full h-[60px] bg-[#fff] text-[#333] font-medium text-[20px] rounded-lg border border-[#DDD] mt-2.5"
@@ -274,7 +273,7 @@ const ResultPage = () => {
           onClick={() => router.push('/mbti/explore')}
           className="w-full h-[60px] bg-[#fff] text-[#333] font-medium text-[20px] rounded-lg border border-[#DDD] mt-2.5"
         >
-          둘러보기
+          다른 유형 둘러보기
         </button>
       </div>
 
