@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import mbtiTypes from './mbti-types'
 import Field from './field'
 import Image from 'next/image'
@@ -11,12 +11,14 @@ import { LOCAL_STORAGE_RESULT_KEY } from '../test/constants'
 
 const ResultPage = () => {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [finalResult, setFinalResult] = useState<{
     result: { [key: string]: string }
     percentages: { [key: string]: { percentage: number; type: string } }
   } | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
+  const [hasSParam, setHasSParam] = useState(false)
 
   // 쿼리 파라미터에서 결과를 가져오는 함수
   const getResultsFromQuery = (query: string) => {
@@ -36,6 +38,10 @@ const ResultPage = () => {
     }
     return null
   }
+
+  useEffect(() => {
+    setHasSParam(searchParams.has('s'))
+  }, [searchParams])
 
   useEffect(() => {
     // 쿼리 파라미터에서 결과를 가져옵니다.
@@ -133,9 +139,6 @@ const ResultPage = () => {
     } else {
     }
   }
-
-  const urlParams = new URLSearchParams(window.location.search)
-  const hasSParam = urlParams.has('s')
 
   if (!finalResult) {
     return (
