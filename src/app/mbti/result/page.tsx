@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import mbtiTypes from './mbti-types'
 import Field from './field'
@@ -148,7 +148,7 @@ const ResultPage = () => {
     )
   }
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       {/* 페이지 헤더 */}
       <h3 className="h-[52px] flex items-center justify-center font-medium text-base text-[#222] mb-2.5">
         결과보기
@@ -350,7 +350,7 @@ const ResultPage = () => {
           </div>
         </Modal>
       )}
-    </>
+    </Suspense>
   )
 }
 
