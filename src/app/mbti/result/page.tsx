@@ -7,6 +7,7 @@ import Field from './field'
 import Image from 'next/image'
 import Modal from '@/components/modal'
 import Button from '@/components/button'
+import { LOCAL_STORAGE_RESULT_KEY } from '../test/constants'
 
 const ResultPage = () => {
   const router = useRouter()
@@ -20,6 +21,8 @@ const ResultPage = () => {
   // 쿼리 파라미터에서 결과를 가져오는 함수
   const getResultsFromQuery = (query: string) => {
     const results = query.split('p=')[1]
+    localStorage.setItem(LOCAL_STORAGE_RESULT_KEY, results)
+
     if (results) {
       const percentages = results.match(/([A-Z])(\d+)/g)
       const resultObj: { [key: string]: { percentage: number; type: string } } =
@@ -261,11 +264,17 @@ const ResultPage = () => {
         >
           공유하기
         </button>
-        <button
+        {/* <button
           onClick={() => router.push('/mbti/welcome')}
           className="w-full h-[60px] bg-[#fff] text-[#333] font-medium text-[20px] rounded-lg border border-[#DDD] mt-2.5"
         >
           처음으로
+        </button> */}
+        <button
+          onClick={() => router.push('/mbti/explore')}
+          className="w-full h-[60px] bg-[#fff] text-[#333] font-medium text-[20px] rounded-lg border border-[#DDD] mt-2.5"
+        >
+          둘러보기
         </button>
       </div>
 

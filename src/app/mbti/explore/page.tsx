@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import MBTIListRow from './mbti-list-row'
 import mbtiTypes from '../result/mbti-types'
+import { LOCAL_STORAGE_RESULT_KEY } from '../test/constants'
 
 const MBTIExplorePage = () => {
   const router = useRouter()
@@ -12,7 +13,10 @@ const MBTIExplorePage = () => {
       {/* 페이지 헤더 */}
       <div className="fixed top-0 left-0 right-0 flex items-center justify-between mb-4 px-4 bg-white z-10">
         <button
-          onClick={() => router.push('/mbti/welcome')} // TODO: result params를 기억해야 하는데 어떻게 하지?
+          onClick={() => {
+            const result = localStorage.getItem(LOCAL_STORAGE_RESULT_KEY)
+            router.push(`/mbti/result?p=${result}`)
+          }}
           className="text-[#8732FF] text-medium text-base"
         >
           <div className="w-[26px] h-[26px] bg-center bg-no-repeat bg-[url('/icons/arrow_back_ios.svg')] bg-contain" />
