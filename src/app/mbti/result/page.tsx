@@ -278,6 +278,61 @@ const ResultPage = () => {
         </button>
       </div>
 
+      {/* Love and Compassion 카드 뉴스 */}
+      <div className="px-4 flex flex-col gap-5">
+        <div
+          className="relative w-full"
+          style={{ paddingTop: `${(447 / 358) * 100}%` }}
+        >
+          <Image
+            src={`/images/lnc/lnc_news_1.png`}
+            alt="카드 뉴스 1"
+            fill
+            style={{ objectFit: 'contain' }}
+            priority
+          />
+        </div>
+        <div
+          className="relative w-full"
+          style={{ paddingTop: `${(447 / 358) * 100}%` }}
+        >
+          <Image
+            src={`/images/lnc/lnc_news_2.png`}
+            alt="카드 뉴스 2"
+            fill
+            style={{ objectFit: 'contain' }}
+            priority
+          />
+        </div>
+        <div
+          className="relative w-full"
+          style={{ paddingTop: `${(447 / 358) * 100}%` }}
+        >
+          <Image
+            src={`/images/lnc/lnc_news_3.png`}
+            alt="카드 뉴스 3"
+            fill
+            style={{ objectFit: 'contain' }}
+            priority
+          />
+        </div>
+        <div
+          className="relative w-full"
+          style={{ paddingTop: `${(375 / 358) * 100}%` }}
+        >
+          <Image
+            src={`/images/lnc/lnc_news_4.png`}
+            alt="카드 뉴스 4"
+            fill
+            style={{ objectFit: 'contain' }}
+            priority
+          />
+        </div>
+      </div>
+
+      {/* blank */}
+      <div className="h-16" />
+
       {/* Modal */}
       {isModalOpen && (
         <Modal setIsOpen={setIsModalOpen} background={true}>
